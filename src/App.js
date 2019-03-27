@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import './App.css';
+import { ContainerTransition, AppContainer } from './appStyled';
 import FilmPage from './components/FilmPage.js';
 import Header from './components/Header.js';
 import SearchBar from './components/SearchBar.js';
@@ -68,7 +68,7 @@ class App extends PureComponent {
     const fiveFirstResults = listFilms.slice(0, 5);
     return (
       <BrowserRouter>
-        <div className="App">
+        <AppContainer>
           <LangContext.Provider value={this.state}>
             <LangContext.Consumer>
               {({ langValue, toggleLang }) => (
@@ -91,33 +91,35 @@ class App extends PureComponent {
                     appear
                     unmountOnExit
                   >
-                    <Switch location={location}>
-                      <Route
-                        exact
-                        path="/"
-                        render={() => (
-                          <ContainerFilms listFilms={newReleasedFilms} />
-                        )}
-                      />
+                    <ContainerTransition>
+                      <Switch location={location}>
+                        <Route
+                          exact
+                          path="/"
+                          render={() => (
+                            <ContainerFilms listFilms={newReleasedFilms} />
+                          )}
+                        />
 
-                      <Route
-                        exact
-                        path="/movie/:filmPage"
-                        component={FilmPage}
-                      />
-                      <Route
-                        exact
-                        path="/actor/:actorPage"
-                        component={ActorPage}
-                      />
-                    </Switch>
+                        <Route
+                          exact
+                          path="/movie/:filmPage"
+                          component={FilmPage}
+                        />
+                        <Route
+                          exact
+                          path="/actor/:actorPage"
+                          component={ActorPage}
+                        />
+                      </Switch>
+                    </ContainerTransition>
                   </CSSTransition>
                 </TransitionGroup>
               )}
             />
             <Footer />
           </LangContext.Provider>
-        </div>
+        </AppContainer>
       </BrowserRouter>
     );
   }
