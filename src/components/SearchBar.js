@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withLangage } from './utils/withLangage';
 import { translateWord } from './utils/changeLang';
@@ -10,6 +9,7 @@ import {
   ImageContainer,
   ResultContainer,
   TextContainer,
+  NavLinkStyled,
 } from './styled-components/searchBarStyled';
 
 const SearchBar = ({
@@ -18,6 +18,8 @@ const SearchBar = ({
   isFocus,
   listFilms,
   langValue,
+  searchBarValue,
+  resetSearchBar,
 }) => {
   const onChangeEvent = ({ target: { value } }) => {
     !isFocus && setFocusSearchBar(true);
@@ -26,19 +28,21 @@ const SearchBar = ({
 
   const onClickSearchBar = () => {
     !isFocus ? setFocusSearchBar(true) : setFocusSearchBar(false);
+    resetSearchBar();
   };
 
   return (
     <SearchBarContainer>
       <InputContainer>
-        <i className="fas fa-search" />
+        <i className="fas fa-search" onClick={onClickSearchBar} />
         <input
           type="text"
           placeholder="Search a movie"
           onChange={onChangeEvent.bind(this)}
           onClick={onClickSearchBar}
+          value={searchBarValue}
         />
-        {listFilms.length > 0 && (
+        {searchBarValue.length > 0 && (
           <i className="fas fa-eraser" onClick={onClickSearchBar} />
         )}
       </InputContainer>
@@ -47,11 +51,7 @@ const SearchBar = ({
         <SearchResultsContainer onClick={onClickSearchBar}>
           {listFilms.length > 0 ? (
             listFilms.map(({ id, poster_path, title, release_date }) => (
-              <NavLink
-                to={`/movie/${id}`}
-                style={{ textDecoration: 'none' }}
-                key={id}
-              >
+              <NavLinkStyled to={`/movie/${id}`} key={id}>
                 <ResultContainer key={id}>
                   <ImageContainer img={poster_path} />
                   <TextContainer>
@@ -61,11 +61,11 @@ const SearchBar = ({
                     <span>{release_date}</span>
                   </TextContainer>
                 </ResultContainer>
-              </NavLink>
+              </NavLinkStyled>
             ))
           ) : (
             <ResultContainer>
-              {translateWord('noResult', langValue)}
+              {translateWord('NoResult', langValue)}
             </ResultContainer>
           )}
         </SearchResultsContainer>

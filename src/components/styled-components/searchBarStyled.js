@@ -1,7 +1,12 @@
 import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
 
 const BASE_URL = 'https://image.tmdb.org/t/p/original/';
 const IMG_FILM = '/img/filmCouv.jpg';
+
+export const NavLinkStyled = styled(NavLink)`
+  text-decoration: none;
+`;
 
 export const SearchBarContainer = styled.div`
   margin-top: 30px;

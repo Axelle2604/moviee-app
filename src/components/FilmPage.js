@@ -35,10 +35,6 @@ class FilmPage extends PureComponent {
   componentDidUpdate = ({ langValue }) =>
     langValue !== this.props.langValue && this.loadData();
 
-  getFilmData = async (filmId, lang) => await getFilmDatas(filmId, lang);
-
-  getCastData = async (filmId, lang) => await getCastDatas(filmId, lang);
-
   loadData = async () => {
     const {
       match: {
@@ -47,8 +43,8 @@ class FilmPage extends PureComponent {
       langValue,
     } = this.props;
     const [infoFilm, castFilm] = await Promise.all([
-      this.getFilmData(filmPage, langValue),
-      this.getCastData(filmPage, langValue),
+      await getFilmDatas(filmPage, langValue),
+      await getCastDatas(filmPage, langValue),
     ]);
     this.setState({ infoFilm, castFilm });
   };
@@ -59,59 +55,58 @@ class FilmPage extends PureComponent {
     const { langValue } = this.props;
     const {
       infoFilm: {
-        data: {
-          poster_path = [translateWord('notSpecified', langValue)],
-          title = [translateWord('notSpecified', langValue)],
-          release_date = [translateWord('notSpecified', langValue)],
-          vote_average = [translateWord('notSpecified', langValue)],
-          vote_count = [translateWord('notSpecified', langValue)],
-          genres = [translateWord('notSpecified', langValue)],
-          overview = [translateWord('notSpecified', langValue)],
-        } = {},
-      },
-      castFilm: {
-        data: { cast = [translateWord('notSpecified', langValue)] } = {},
-      },
+        poster_path: imgPath,
+        title,
+        release_date: releaseDate,
+        vote_average: voteAverage,
+        vote_count: voteCount,
+        genres = [],
+        overview = [translateWord('NotSpecified', langValue)],
+      } = {},
+      castFilm,
       isFiveFirstCast,
     } = this.state;
-    const fiveFirstCast = cast.slice(0, 5);
-    const otherCast = cast.slice(5);
+
+    const fiveFirstCast = castFilm.slice(0, 5);
+    const otherCast = castFilm.slice(5);
 
     return (
       <FilmContainer>
         <InfoContainer>
-          <ImageContainer img={poster_path} />
+          <ImageContainer img={imgPath} />
           <TextContainer>
             <h2>{title}</h2>
             <p>
-              <TextBold>{translateWord('releaseDate', langValue)}</TextBold>
-              {release_date}
+              <TextBold>{translateWord('ReleaseDate', langValue)}</TextBold>
+              {releaseDate}
             </p>
             <p>
-              <TextBold>{translateWord('rating', langValue)}</TextBold>
-              {vote_average}
+              <TextBold>{translateWord('Rating', langValue)}</TextBold>
+              {voteAverage}
             </p>
             <p>
-              <TextBold>{translateWord('voteCount', langValue)}</TextBold>
-              {vote_count}
+              <TextBold>{translateWord('VoteCount', langValue)}</TextBold>
+              {voteCount}
             </p>
             <p>
-              <TextBold>{translateWord('genres', langValue)}</TextBold>
-              {genres.map(({ id = Date.now(), name }, index) => (
-                <span key={id}>
-                  {name}
-                  {index !== genres.length - 1 && ', '}
-                </span>
-              ))}
+              <TextBold>{translateWord('Genres', langValue)}</TextBold>
+              {genres.length > 0
+                ? genres.map(({ id, name }, index) => (
+                    <span key={id}>
+                      {name}
+                      {index !== genres.length - 1 && ', '}
+                    </span>
+                  ))
+                : translateWord('NotSpecified', langValue)}
             </p>
             <p>{overview}</p>
           </TextContainer>
         </InfoContainer>
         <CastContainer>
-          <h3>{translateWord('cast', langValue)}</h3>
+          <h3>{translateWord('Cast', langValue)}</h3>
           <ActorsContainer>
-            {fiveFirstCast.map(
-              ({ character, name, profile_path, id = Date.now() }) => (
+            {fiveFirstCast.map(({ character, name, profile_path, id }) => {
+              return (
                 <Actor
                   character={character}
                   name={name}
@@ -119,20 +114,18 @@ class FilmPage extends PureComponent {
                   id={id}
                   key={id}
                 />
-              )
-            )}
+              );
+            })}
             {!isFiveFirstCast &&
-              otherCast.map(
-                ({ character, name, profile_path, id = Date.now() }) => (
-                  <Actor
-                    character={character}
-                    name={name}
-                    image={profile_path}
-                    id={id}
-                    key={id}
-                  />
-                )
-              )}
+              otherCast.map(({ character, name, profile_path, id }) => (
+                <Actor
+                  character={character}
+                  name={name}
+                  image={profile_path}
+                  id={id}
+                  key={id}
+                />
+              ))}
           </ActorsContainer>
           {isFiveFirstCast && otherCast.length > 0 && (
             <SeeMoreButton onClick={this.onClickSeeMore}>

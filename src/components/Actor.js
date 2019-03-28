@@ -8,7 +8,7 @@ import {
   TextContainer,
 } from './styled-components/actorStyled';
 
-const Actor = ({ id = Date.now(), image, character }) => {
+const Actor = ({ id, image, character }) => {
   return (
     <ActorContainer>
       <Link to={`/actor/${id}`}>

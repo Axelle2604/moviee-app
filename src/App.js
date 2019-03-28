@@ -33,22 +33,20 @@ class App extends PureComponent {
     }));
   }
 
+  resetSearchBar = () => {
+    this.setState({ searchBarValue: '' });
+  };
+
   loadData = async lang => {
-    const {
-      data: { results },
-    } = await getMovieByPopularity(lang);
     this.setState({
-      newReleasedFilms: results,
+      newReleasedFilms: await getMovieByPopularity(lang),
     });
   };
 
   getFilmByTitle = async () => {
     const { searchBarValue, langValue } = this.state;
-    const {
-      data: { results },
-    } = await getMovieByTitle(searchBarValue, langValue);
     this.setState({
-      listFilms: results,
+      listFilms: await getMovieByTitle(searchBarValue, langValue),
     });
   };
 
@@ -64,7 +62,7 @@ class App extends PureComponent {
   setFocusSearchBar = bool => this.setState({ isFocus: bool });
 
   render() {
-    const { listFilms, isFocus, newReleasedFilms } = this.state;
+    const { listFilms, isFocus, newReleasedFilms, searchBarValue } = this.state;
     const fiveFirstResults = listFilms.slice(0, 5);
     return (
       <BrowserRouter>
@@ -80,6 +78,8 @@ class App extends PureComponent {
               listFilms={fiveFirstResults}
               setFocusSearchBar={this.setFocusSearchBar}
               isFocus={isFocus}
+              searchBarValue={searchBarValue}
+              resetSearchBar={this.resetSearchBar}
             />
             <Route
               render={({ location }) => (

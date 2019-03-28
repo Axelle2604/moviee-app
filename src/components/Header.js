@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import { NavLink } from 'react-router-dom';
 import { translateWord } from './utils/changeLang';
 
 import {
@@ -10,6 +9,7 @@ import {
   SubLogo,
   TextBold,
   LangButton,
+  StyledNavLink,
 } from './styled-components/headerStyled';
 
 class Header extends PureComponent {
@@ -19,17 +19,17 @@ class Header extends PureComponent {
       <HeaderContainer>
         <Logo>
           <SubLogo className="fas fa-play-circle" />
-          <NavLink to="/" style={{ textDecoration: 'none' }}>
+          <StyledNavLink to="/">
             <Title>Moviee</Title>
-          </NavLink>
+          </StyledNavLink>
         </Logo>
         <TextContainer>
           <TextBold>
-            {translateWord('realizedBy', langValue)}Axelle DRU
+            {translateWord('RealizedBy', langValue)}Axelle DRU
           </TextBold>
           <TextBold>API: The Movie Database</TextBold>
           <LangButton onClick={toggleLang}>
-            {translateWord('switchLang', langValue)}
+            {translateWord('SwitchLang', langValue)}
           </LangButton>
         </TextContainer>
       </HeaderContainer>

@@ -1,5 +1,8 @@
 import styled from 'styled-components';
 
+const BASE_URL = 'https://image.tmdb.org/t/p/original/';
+const IMG_FILM = '/img/filmCouv.jpg';
+
 export const FilmContainer = styled.div`
   margin-top: 40px;
   width: 100%;
@@ -21,7 +24,7 @@ export const ImageContainer = styled.div`
   background-size: contain;
   background-repeat: no-repeat;
   background-image: url(${({ img }) =>
-    `https://image.tmdb.org/t/p/original/${img}`});
+    img ? `${BASE_URL}${img}` : `${IMG_FILM}`});
 `;
 
 export const TextContainer = styled.div`

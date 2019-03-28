@@ -27,44 +27,45 @@ class ActorPage extends PureComponent {
       },
       langValue,
     } = this.props;
-    const { data } = await getActorPage(actorPage, langValue);
     this.setState({
-      infoActor: data,
+      infoActor: await getActorPage(actorPage, langValue),
     });
   };
 
   render() {
     const {
       infoActor: {
-        profile_path,
+        profile_path: imgPath,
         name,
         birthday,
         deathday,
         biography,
-        place_of_birth,
+        place_of_birth: placeOfBirth,
       },
     } = this.state;
     const { langValue } = this.props;
     return (
       <ActorPageContainer>
-        <ImageContainer img={profile_path} />
+        <ImageContainer img={imgPath} />
         <TextContainer>
           <h2>{name}</h2>
           <p>
-            <TextBold>{translateWord('birthday', langValue)}</TextBold>
-            {birthday}
+            <TextBold>{translateWord('Birthday', langValue)}</TextBold>
+            {birthday ? birthday : translateWord('NotSpecified', langValue)}
           </p>
           <p>
-            <TextBold>{translateWord('birthPlace', langValue)}</TextBold>
-            {place_of_birth}
+            <TextBold>{translateWord('BirthPlace', langValue)}</TextBold>
+            {placeOfBirth
+              ? placeOfBirth
+              : translateWord('NotSpecified', langValue)}
           </p>
           <p>
-            <TextBold>{translateWord('deathday', langValue)}</TextBold>
-            {deathday ? deathday : translateWord('notSpecified', langValue)}
+            <TextBold>{translateWord('Deathday', langValue)}</TextBold>
+            {deathday ? deathday : translateWord('NotSpecified', langValue)}
           </p>
           <p>
-            <TextBold>{translateWord('biography', langValue)}</TextBold>
-            {biography ? biography : translateWord('notSpecified', langValue)}
+            <TextBold>{translateWord('Biography', langValue)}</TextBold>
+            {biography ? biography : translateWord('NotSpecified', langValue)}
           </p>
         </TextContainer>
       </ActorPageContainer>

@@ -12,10 +12,7 @@ const Film = ({ id, title, date, image }) => (
   <FilmContainer>
     <Link to={`/movie/${id}`}>
       <TextContainer>
-        <div>
-          <h3>{title}</h3>
-        </div>
-        <br />
+        <h3>{title}</h3>
         <div>{date}</div>
       </TextContainer>
       <ImageContainer img={image} />

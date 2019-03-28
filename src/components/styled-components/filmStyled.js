@@ -13,7 +13,7 @@ export const FilmContainer = styled.div`
   width: 200px;
   height: 300px;
   position: relative;
-  margin-bottom: 20px;
+  margin: 20px;
   &:hover ${TextContainer} {
     background-color: black;
     color: #40e0d0;
@@ -39,5 +39,6 @@ export const ImageContainer = styled.div`
   box-shadow: 0px 0px 5px 1px #282828;
   background-size: cover;
   background-position: center;
-  background-image: url(${({ img }) => (img ? `${BASE_URL}${img}` : IMG_FILM)});
+  background-image: url(${({ img }) =>
+    img ? `${BASE_URL}${img}` : `${IMG_FILM}`});
 `;

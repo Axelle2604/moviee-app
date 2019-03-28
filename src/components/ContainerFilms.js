@@ -10,7 +10,7 @@ import {
 
 const ContainerFilms = ({ langValue, listFilms }) => (
   <FilmsContainer>
-    <h2>{translateWord('newReleases', langValue)}</h2>
+    <h2>{translateWord('NewReleases', langValue)}</h2>
     <FilmsSubContainer>
       {listFilms.map(({ poster_path, title, id, release_date }) => (
         <Film
